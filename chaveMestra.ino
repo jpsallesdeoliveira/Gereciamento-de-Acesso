@@ -1,5 +1,11 @@
 String event;
 
+// Variáveis para controle do tempo e estado das portas
+unsigned long tempoInicial1 = 0;
+bool ledLigado1 = false;
+unsigned long tempoInicial2 = 0;
+bool ledLigado2 = false;
+
 // Leitura da porta serial
 void SerialTask(void *pvParameters) {
     (void) pvParameters;
@@ -97,6 +103,9 @@ void obterEventos() {
 // Liberar porta 1
 void liberar1() {
     Serial.println();
+    digitalWrite(18, HIGH);
+    ledLigado1 = true;
+    tempoInicial1 = millis();
     Serial.println("Porta 1 liberada...");
     Serial.println();
     showMenu();
@@ -105,6 +114,9 @@ void liberar1() {
 // Liberar porta 2
 void liberar2() {
     Serial.println();
+    digitalWrite(19, HIGH);
+    ledLigado2 = true;
+    tempoInicial2 = millis();
     Serial.println("Porta 2 liberada...");
     Serial.println();
     showMenu();
@@ -176,6 +188,10 @@ void setup() {
     Serial.begin(115200);
     delay(100);
 
+    // portas
+    pinMode(18, OUTPUT);
+    pinMode(19, OUTPUT);
+
     // Mostrar menu
     showMenu();
 
@@ -192,5 +208,23 @@ void setup() {
 
 // Laço principal
 void loop() {
-    
+    // fechamento automático porta 1
+    if (ledLigado1 && (millis() - tempoInicial1 >= 5000)) {
+        digitalWrite(18, LOW);
+        ledLigado1 = false;
+        Serial.println();
+        Serial.println("Porta 1 fechada");
+        Serial.println();
+        showMenu();
+    }
+
+    // fechamento automático porta 2
+    if (ledLigado2 && (millis() - tempoInicial2 >= 5000)) {
+        digitalWrite(19, LOW);
+        ledLigado2 = false;
+        Serial.println();
+        Serial.println("Porta 2 fechada");
+        Serial.println();
+        showMenu();
+    }
 }
