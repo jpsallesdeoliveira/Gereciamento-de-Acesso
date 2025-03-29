@@ -36,6 +36,7 @@ void menuUser() {
     Serial.println("i. Nome");
     Serial.println("ii. Senha");
     Serial.println("iii. Definição do tipo de usuário  (Administrador ou não).");
+    Serial.println("iv. Menu principal");
     event = "user";
 }
 
@@ -49,6 +50,11 @@ void menuNome() {
 // Adicionar nome
 void addNome(String nome) {
     event = "add_nome";
+}
+
+// Adicionar Senha
+void addSenha(String senha) {
+    event = "add_senha";
 }
 
 // Menu senha
@@ -65,17 +71,54 @@ void menuTipo() {
     event = "tipo";
 }
 
+// Adicionar tipo
+void addTipo(String option) {
+    event = "addTipo";
+}
+
 // Listar nomes
 void obterNomes() {
     Serial.println();
     Serial.println("Lista dos nomes...");
-    Serial.println("i. Voltar para o menu principal");
-    event = "lista_nomes";
+    Serial.println();
+    showMenu();
+    // Serial.println("i. Voltar para o menu principal");
+    // event = "lista_nomes";
+}
+
+// Listar eventos
+void obterEventos() {
+    Serial.println();
+    Serial.println("Lista dos eventos...");
+    Serial.println();
+    showMenu();
+}
+
+// Liberar porta 1
+void liberar1() {
+    Serial.println();
+    Serial.println("Porta 1 liberada...");
+    Serial.println();
+    showMenu();
+}
+
+// Liberar porta 2
+void liberar2() {
+    Serial.println();
+    Serial.println("Porta 2 liberada...");
+    Serial.println();
+    showMenu();
 }
 
 // Adicionar fila
 void addFila(String nome) {
 
+}
+
+// Mostrar eventos
+void showEvents() {
+    Serial.println("Eventos...");
+    showMenu();
 }
 
 // Processar opção
@@ -86,11 +129,15 @@ void processMenu(String option) {
         } else if (option == "b") {
             obterNomes();
         } else if (option == "c") {
-
+            obterEventos();
         } else if (option == "d") {
-
+            liberar1();
         } else if (option == "e") {
-
+            liberar2();
+        } else {
+            Serial.println("Opção inválida.");
+            Serial.println();
+            showMenu();
         }
     } else if (event == "user") {
         if (option == "i") {
@@ -99,6 +146,11 @@ void processMenu(String option) {
             menuSenha();
         } else if (option == "iii") {
             menuTipo();
+        } else if (option == "iv") {
+            showMenu();
+        } else {
+            Serial.println("Opção inválida.");
+            menuUser();
         }
     } else if (event == "events") {
 
@@ -110,14 +162,11 @@ void processMenu(String option) {
         addFila(option);
         menuUser();
     } else if (event == "senha") {
-
+        addSenha(option);
+        menuUser();
     } else if (event == "tipo") {
-        
-    } else if (event == "lista_nomes") {
-        if (option == "i") {
-            Serial.println();
-            showMenu();
-        }
+        addTipo(option);
+        menuUser();
     }
 }
 
